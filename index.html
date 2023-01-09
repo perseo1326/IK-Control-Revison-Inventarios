@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carga y lectura archivo de texto en Javascript</title>
+</head>
+<body>
+    <h1>Carga y lectura de archivo</h1>
+    <h3>Objetivo:</h3>
+    <p>Carga y lectura de archivo de texto para analisis de datos planos.</p>
+
+    <div id="texto">
+        <!-- The `multiple` attribute lets users select multiple files. -->
+        <input type="file" id="file-input" />
+        <h3>Contenido del archivo:</h3>
+        <pre id="contenido-archivo"></pre>
+    </div>
+
+
+    <script>
+
+
+        function leerArchivo(file) {
+            let archivo = file.target.files[0];
+            if (!archivo) {
+                console.log("No se ha seleccionado ningun archivo.");
+                return;
+            }
+            let lector = new FileReader();
+            lector.onload = function(file) {
+                let contenido = file.target.result;
+                console.log("Contenido de 'contenido'");
+                console.log(contenido);
+                mostrarContenido(contenido);
+            };
+            lector.readAsText(archivo);
+        }
+
+        function mostrarContenido(contenido) {
+            let elemento = document.getElementById('contenido-archivo');
+            elemento.innerHTML = contenido;
+        }
+
+        document.getElementById('file-input')
+        .addEventListener('change', leerArchivo, false);
+        
+
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
