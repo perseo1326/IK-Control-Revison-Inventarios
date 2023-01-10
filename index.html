@@ -21,35 +21,8 @@
 
     <script>
 
-
-        function leerArchivo(file) {
-            let archivo = file.target.files[0];
-            console.log(file);
-            if (!archivo) {
-                console.log("No se ha seleccionado ningun archivo.");
-                return;
-            }
-            let lector = new FileReader();
-            lector.onload = function(file) {
-                let contenido = file.target.result;
-                // console.log("Contenido de 'contenido'");
-                // console.log(contenido);
-                mostrarContenido(contenido);
-            };
-            lector.readAsText(archivo);
-        }
-
-        function mostrarContenido(contenido) {
-            let elemento = document.getElementById('contenido-archivo');
-            elemento.innerHTML = contenido;
-        }
-
-        document.getElementById('file-input')
-        .addEventListener('change', leerArchivo, false);
-        
-
     </script>
 
-    <!-- <script src="script.js"></script> -->
+    <script src="script.js"></script>
 </body>
 </html>
