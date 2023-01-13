@@ -4,18 +4,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Carga y lectura archivo de texto en Javascript</title>
 </head>
 <body>
-    <h1>Carga y lectura de archivo</h1>
-    <h3>Objetivo:</h3>
-    <p>Carga y lectura de archivo de texto para analisis de datos planos.</p>
+    <div>
+        <h1>Carga y lectura de archivo</h1>
+        <h3>Objetivo:</h3>
+        <p>Carga y lectura de archivo de texto para analisis de datos planos.</p>
+    </div>
+
+    <div class="marco">
+        <h4>Seleccione el dia de la semana:</h4>
+        <ul>
+            <li><input type="radio" name="option1" id="">Lunes / Jueves</li>
+            <li><input type="radio" name="option1" id="">Martes / Viernes</li>
+            <li><input type="radio" name="option1" id="">Miercóles / Sábado</li
+                >
+        </ul>
+    </div>
 
     <div id="texto">
         <!-- The `multiple` attribute lets users select multiple files. -->
         <input type="file" id="file-input" />
         <h3>Contenido del archivo:</h3>
         <pre id="contenido-archivo"></pre>
+    </div>
+
+    <div class="no-visible" id="loading">
+        <p>Cargando...</p>
     </div>
 
 

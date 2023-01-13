@@ -1,0 +1,24 @@
+
+
+
+div#loading {
+    position: absolute;
+    padding: 1rem;
+    background-color: cadetblue;
+    top: 50%;
+    left: 50%;
+}
+
+.no-visible {
+    display: none;
+}
+
+.marco {
+    border: 2px solid black;
+    background-color: antiquewhite;
+    margin: 0.5rem;
+}
+
+ul li {
+    list-style-type: none;
+}
