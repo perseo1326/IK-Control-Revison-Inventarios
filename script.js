@@ -1,52 +1,116 @@
 
-
     class StockControl {
         constructor(hfb, articleNumber, articleName, salesMethod, avgSales, availableStock, salesLocationLV) {
-            this.hfb = hfb;
+            this.hfb = Number (hfb);
             this.articleNumber = articleNumber;
             this.articleName = articleName;
-            this.salesMethod = salesMethod;
-            this.avgSales = avgSales;
-            this.availableStock = availableStock;
+            this.salesMethod = Number (salesMethod.replace(',', '.'));
+            this.avgSales = Number (avgSales.replace(',', '.'));
+            this.availableStock = Number (availableStock.replace(',', '.'));
             this.salesLocationLV = salesLocationLV;
             this.rotationRatio = 0;
         }
     }
 
     // *********************************************************
-    // Hacer visible el cuadro de "Cargando..."
-    let loading = document.getElementById("loading");
-    let fileInput = document.getElementById('file-input');
+    const loading = document.getElementById("loading");
+    const fileSelector = document.getElementById('file-input');
+    const radioButtons = document.getElementsByName("estate");
+    const contenido = document.getElementById("contenido-archivo");
+    const ESTATE_ONE = 'estateOne';
+    const ESTATE_TWO = 'estateTwo';
+    const ESTATE_THREE = 'estateThree';
 
-    fileInput.addEventListener('change', processFile, false);
-    fileInput.addEventListener('click', toggleLoading, false);
+    fileSelector.addEventListener('change', openFile, false); 
 
+    const fileReader = new FileReader();
+    let content = new Array();
+    let weekDay = new Date("2023-01-16");
 
+    
     // *********************************************************
-    function toggleLoading() {
-        loading.classList.toggle("no-visible");
+    // Auto seleccionar el dia de la semana correspondiente para el 'estado'
+    switch (weekDay.getDay()) {
+        case 1:
+        case 4:
+            document.getElementById(ESTATE_ONE).checked = true;
+            break;
+        case 2:
+        case 5:
+            document.getElementById(ESTATE_TWO).checked = true;
+            break;
+        case 3: 
+        case 6:
+            document.getElementById(ESTATE_THREE).checked = true;
+            break;
+        default:
+            console.log("es Domingo?");
     }
 
     // *********************************************************
-    function processFile(file) {
-        // Inicio del proceso de carga y analisis del archivo de texto o CSV
-        const aFile = openTextFile(file);
-        if(!aFile) {            
+    // Encontrar el radio button del 'estado' seleccionado
+    function estateSelected() {
+        for (let i = 0; i < radioButtons.length; i++) {
+            if(radioButtons[i].checked) {
+                return radioButtons[i].value;
+            }
+        }
+        return null;
+    }
+
+    // *********************************************************
+    function openFile(evento) {
+        let file = evento.target.files[0];
+        file = verifyTextFile(file);
+        if(!file) {            
             return;
         }
-        // console.log("Propiedades del archivo:");
-        // console.log(aFile);
-        loadTextFile(aFile);
-        toggleLoading();
-
+        fileReader.readAsText(file);
+        fileReader.onload = loadFile;
     }
 
     // *********************************************************
-    function openTextFile(file) {
-        // Apertura del archivo seleccionado
-        let aFile = file.target.files[0];
+    function loadFile() {
+        let rows = fileReader.result.split('\n');
+        let columns = [];
+        content = [];
+        rows.forEach(row => {
+            columns = row.split('\t');
+            content.push(columns);
+        });
+
+        if(!validateContent(content[0])) {
+            console.log("El contenido del archivo NO tiene formato válido.");
+            alert("El contenido del archivo NO tiene formato válido.");
+            return;
+        }
+
+        console.log("Total filas iniciales: " + content.length);
+        deleteEmptyFinalLines(content[0].length);
+        // Eliminar los encabezados
+        content.shift();
+        console.log("eliminando los encabezados: " + content.length);
+
+        let estate = estateSelected();
+        if(!estate) {
+            console.log("Error en la seleccion del dia de la semana(estado).");
+            return;
+        }
+
+        filterColumns();
+        console.log("filtrar columnas", content.length);
+        content = verifySalesMethodTwo();
+        console.log("verificando metodo de ventas 2: ", content.length);
+        processContent(estate);
+
+        showContent();
         
-        if (!aFile) {
+    }
+
+    // *********************************************************
+    // Verifica el archivo seleccionado        
+    function verifyTextFile(file) {
+        if (!file) {
             alert("No se ha seleccionado ningun archivo.");
             console.log("No se ha seleccionado ningun archivo.");
             return null;
@@ -58,62 +122,39 @@
             return null;
         }
         */
-        return aFile;
+        return file;
     }
 
     // *********************************************************
-    function loadTextFile(aFile) {
-        // Carga del contenido del archivo
-        let lector = new FileReader();
-        lector.onload = function(aFile) {
-            let content = new Array;
-            let rows = aFile.target.result.split("\n");
-            rows.forEach(row => {
-                let columns = row.split("\t"); 
-                content.push(columns);    
-            });
-
-            // Eliminar lineas vacias o incompletas al final del archivo.
-            deleteEmptyFinalLines(content[0].length, content);
-
-            let filteredData = processContent(content);
-            
-
-
-            
-
-            
-            showContent(filteredData);
-        };
-        lector.readAsText(aFile);
+    // Verificar la estructura de la informacion en el archivo
+    function validateContent(arrayRow) {
+        if (arrayRow[0].trim() == "HFB" && 
+            arrayRow[2].trim() == "ARTNO" && 
+            arrayRow[3].trim() == "ARTNAME_UNICODE" && 
+            arrayRow[6].trim() == "SALESMETHOD" &&
+            arrayRow[5].trim() == "AVGSALES" &&
+            arrayRow[10].trim() == "AVAILABLESTOCK" &&
+            arrayRow[18].trim() == "SLID_H" ) {
+                return true;
+        } 
+        return false;
     }
-
+    
     // *********************************************************
-    function deleteEmptyFinalLines(totalColumns, content) {
+    // Elimina todas las lineas no validas del final de archivo.
+    function deleteEmptyFinalLines(totalColumns) {
         // console.log("deleteEmptyFinalLines");
         if (content[content.length - 1].length < totalColumns) {
             content.pop();
-            deleteEmptyFinalLines(totalColumns, content);
+            deleteEmptyFinalLines(totalColumns);
         }
     }
 
     // *********************************************************
-    // Nucleo de la logica de negocio de la aplicacion
-    function processContent(content) {
-        if(!verifyContent(content[0])) {
-            alert("El contenido del archivo NO tiene formato válido.");
-            console.log("El contenido del archivo NO tiene formato válido.");
-            return;
-        }
-        return filterColumns(content);
-    }
-
-    // *********************************************************
-    function filterColumns(content) {
+    function filterColumns() {
         let stockControlData = new Array();
-        for (let row = 1; row < content.length; row++) {
+        for (let row = 0; row < content.length; row++) {
         // (hfb, articleNumber, articleName, salesMethod, avgSales, availableStock, salesLocationLV) rotationRatio
-
             const stock = new StockControl(content[row][0].trim(), 
                                             content[row][2].trim(),
                                             content[row][3].trim(),
@@ -123,45 +164,97 @@
                                             content[row][18].trim() ); 
             stockControlData.push(stock);
         }
-        return stockControlData;
+        content = stockControlData;
     }
     
     // *********************************************************
-    function verifyContent(content) {
-
-        // Verificar la estructura de la informacion en el archivo
-        if (content[0].trim() == "HFB" && 
-            content[2].trim() == "ARTNO" && 
-            content[3].trim() == "ARTNAME_UNICODE" && 
-            content[6].trim() == "SALESMETHOD" &&
-            content[5].trim() == "AVGSALES" &&
-            content[10].trim() == "AVAILABLESTOCK" &&
-            content[18].trim() == "SLID_H" ) {
-                return true;
-        } 
-        return false;
+    // Verificar y eliminar cualquier objeto con metodo de venta diferente de '2'
+    function verifySalesMethodTwo() {
+        return content.filter( (row) => {return row.salesMethod == 2 } );
     }
 
     // *********************************************************
-    function showContent(content) {
-        let element = document.getElementById('contenido-archivo');
-        let data = "";
+    // Seleccionar la logica dependiendo del 'estado' seleccioando
+    function processContent(estate) {
+        switch (estate) {
+            case ESTATE_ONE:
+                content = removeHFB_Kitchens();
+                console.log("removeHFB_Kitchens", content.length);
 
+                content = filterAvgSales_MoreThanCero();
+                console.log("filterAvgSales_MoreThanCero", content.length);
+
+                content = filterAvailableStock_MoreThanCero();
+                console.log("filterAvailableStock_MoreThanCero", content.length);
+
+                divideAvailableStockByAvgSales();
+
+                content = filterRotationRatio_MoreThanOne();
+                console.log("filterRotationRatio_MoreThanOne", content.length);
+
+                break;
+            case ESTATE_TWO:
+
+                break;
+            case ESTATE_THREE:
+                break;
+        
+            default:
+                break;
+        }
+    }
+
+
+
+
+    
+    // *********************************************************
+    // Eliminar objetos con 'AVG_SALES' > 0
+    function filterAvgSales_MoreThanCero() {
+        return content.filter( row => { return row.avgSales > 0  } );
+    }
+
+    // *********************************************************
+    // Eliminar objetos con 'AVAILABLE_STOCK' > 0
+    function filterAvailableStock_MoreThanCero() {
+        return content.filter( row => { return row.availableStock > 0  } );
+    }
+    
+    // *********************************************************
+    // Remover objetos con FHB == 07
+    function removeHFB_Kitchens() {
+        return content.filter( row => {return row.hfb != 7 } );
+    }
+
+    // *********************************************************
+    // Calcula el valor de dividir 'AVAILABLE_STOCK' / 'AVG_SALES'
+    function divideAvailableStockByAvgSales() {
+        for (const row of content) {
+            row.rotationRatio = row.availableStock / row.avgSales;
+        }
+    }
+
+    // *********************************************************
+    // Eliminar todos los obj con 'rotationRatio' > 1
+    function filterRotationRatio_MoreThanOne() {
+        return content.filter( row => { return row.rotationRatio <= 1 })
+    }
+
+
+
+    // *********************************************************
+    function showContent() {
         // (hfb, articleNumber, articleName, salesMethod, avgSales, availableStock, salesLocationLV) rotationRatio
-
-            data = "hfb, articleNumber, articleName, salesMethod, avgSales, availableStock, salesLocationLV, rotationRatio\n";
-        content.forEach(row => {
-            data += row.hfb + '\t' + row.articleNumber + '\t' + row.articleName + '\t' + 
-            row.avgSales + '\t' + row.salesMethod + '\t' + row.availableStock + '\t' + row.salesLocationLV + '\n'
-        })
+        let headers = ["HFB", "Descripción", "Art No.", "Lugar Venta"];
+        let dataTable = "";
+        
+        
 
 
 
-        element.innerHTML = data;
         console.log("Show content:");   
         console.log(content);
     }
 
     // *********************************************************
 
-    

@@ -3,3 +3,12 @@ HFB	PA  	ARTNO   	ARTNAME_UNICODE                                   	UNIT 	AVGSA
 01 	0111	00180124	KIVIK str chaise                                  	piece	-0,10   	2          	A         	7  	0,00      	0,00          	250   	2,07    	0,91   	0,29    	0.542568 	45400   	0       	      	0,0    	0      	                  	0               	Yes             	1   	4   	    	0    	   	5 	0,0                	0          	0           	        	2,60    	DISCONTINUED	20100401	20220401	1,5                  	HFR      
 01 	0111	00185032	EKTORP NNN str so 2                               	piece	11,10   	2          	O         	1  	0,00      	6,00          	240   	2,03    	0,88   	0,38    	0.769559 	55650   	0       	782700	9,7    	1      	                  	1               	Yes             	2   	2   	6   	0    	2  	1 	13,9               	0          	0           	066     	1,90    	MAN         	20110401	        	1,5                  	NFR      
 
+
+
+
+
+
+
+
+
+                                    

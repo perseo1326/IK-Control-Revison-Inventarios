@@ -17,15 +17,15 @@
     <div class="marco">
         <h4>Seleccione el dia de la semana:</h4>
         <ul>
-            <li><input type="radio" name="option1" id="">Lunes / Jueves</li>
-            <li><input type="radio" name="option1" id="">Martes / Viernes</li>
-            <li><input type="radio" name="option1" id="">Miercóles / Sábado</li
-                >
+            <li><input type="radio" name="estate" id="estateOne" value="estateOne" checked>Lunes / Jueves</li>
+            <li><input type="radio" name="estate" id="estateTwo" value="estateTwo">Martes / Viernes</li>
+            <li><input type="radio" name="estate" id="estateThree" value="estateThree">Miercóles / Sábado</li>
         </ul>
     </div>
 
     <div id="texto">
         <!-- The `multiple` attribute lets users select multiple files. -->
+        <!-- The attribute 'accept' allow to filter the files by their type -->
         <input type="file" id="file-input" />
         <h3>Contenido del archivo:</h3>
         <pre id="contenido-archivo"></pre>
