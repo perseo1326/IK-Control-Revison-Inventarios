@@ -22,3 +22,7 @@ div#loading {
 ul li {
     list-style-type: none;
 }
+
+input[type="file"] {
+    background-color: blanchedalmond;
+}

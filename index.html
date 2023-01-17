@@ -14,6 +14,14 @@
         <p>Carga y lectura de archivo de texto para analisis de datos planos.</p>
     </div>
 
+    <div id="">
+        <!-- The `multiple` attribute lets users select multiple files. -->
+        <!-- The attribute 'accept' allow to filter the files by their type -->
+        <input type="file" id="file-input" />
+        <h3>Contenido del archivo:</h3>
+        <pre id="contenido-archivo"></pre>
+    </div>
+
     <div class="marco">
         <h4>Seleccione el dia de la semana:</h4>
         <ul>
@@ -23,18 +31,28 @@
         </ul>
     </div>
 
-    <div id="texto">
-        <!-- The `multiple` attribute lets users select multiple files. -->
-        <!-- The attribute 'accept' allow to filter the files by their type -->
-        <input type="file" id="file-input" />
-        <h3>Contenido del archivo:</h3>
-        <pre id="contenido-archivo"></pre>
+    <div>
+        <input type="button" value="Procesar Archivo" id="process-file">
     </div>
 
     <div class="no-visible" id="loading">
         <p>Cargando...</p>
     </div>
 
+    <table id="data-table">
+        <thead>
+        <!-- let headers = ["HFB", "Descripción", "Art No.", "Lugar Venta"]; -->
+            <tr>
+                <th>HFB</th>
+                <th>Descripción</th>
+                <th>Art. No.</th>
+                <th>Lugar de Venta</th>
+            </tr>
+        </thead>
+        <tbody id="data-body">
+
+        </tbody>
+    </table>
 
     <script>
 

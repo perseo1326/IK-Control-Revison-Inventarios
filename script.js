@@ -17,11 +17,15 @@
     const fileSelector = document.getElementById('file-input');
     const radioButtons = document.getElementsByName("estate");
     const contenido = document.getElementById("contenido-archivo");
+    const tableBody = document.getElementById("data-body");
+    const processFile = document.getElementById("process-file");
+
     const ESTATE_ONE = 'estateOne';
     const ESTATE_TWO = 'estateTwo';
     const ESTATE_THREE = 'estateThree';
 
     fileSelector.addEventListener('change', openFile, false); 
+    processFile.addEventListener('click', loadFile);
 
     const fileReader = new FileReader();
     let content = new Array();
@@ -66,7 +70,7 @@
             return;
         }
         fileReader.readAsText(file);
-        fileReader.onload = loadFile;
+        // fileReader.onload = loadFile;
     }
 
     // *********************************************************
@@ -85,6 +89,7 @@
             return;
         }
 
+        console.log("***********************************");
         console.log("Total filas iniciales: " + content.length);
         deleteEmptyFinalLines(content[0].length);
         // Eliminar los encabezados
@@ -176,6 +181,7 @@
     // *********************************************************
     // Seleccionar la logica dependiendo del 'estado' seleccioando
     function processContent(estate) {
+        console.log("Estado seleccionado: " + estate);
         switch (estate) {
             case ESTATE_ONE:
                 content = removeHFB_Kitchens();
@@ -192,26 +198,52 @@
                 content = filterRotationRatio_MoreThanOne();
                 console.log("filterRotationRatio_MoreThanOne", content.length);
 
+                orderBySalesLocationLV();
                 break;
             case ESTATE_TWO:
+                content = selectOnlyHFB_Kitchens();
+                console.log("selectOnlyHFB_Kitchens", content.length);
 
+                content = filterAvgSales_MoreThanCero();
+                console.log("filterAvgSales_MoreThanCero", content.length);
+
+                content = filterAvailableStock_MoreThanCero();
+                console.log("filterAvailableStock_MoreThanCero", content.length);
+
+                divideAvailableStockByAvgSales();
+
+                content = filterRotationRatio_MoreThanOne();
+                console.log("filterRotationRatio_MoreThanOne", content.length);
+
+                orderBySalesLocationLV();
                 break;
             case ESTATE_THREE:
+                content = filterAvgSales_LessThanEqualOne();
+                console.log("filterAvgSales_LessThanEqualOne", content.length);
+
+                content = filterAvailableStock_OnlyEqualOne();
+                console.log("filterAvailableStock_OnlyEqualOne", content.length);
+
+                orderBySalesLocationLV();
                 break;
         
             default:
-                break;
+                console.log("Error inesperado, actualice la pagina.");
+                alert("Error inesperado, actualice la pagina.");
+                return;
         }
     }
-
-
-
-
     
     // *********************************************************
     // Eliminar objetos con 'AVG_SALES' > 0
     function filterAvgSales_MoreThanCero() {
         return content.filter( row => { return row.avgSales > 0  } );
+    }
+
+    // *********************************************************
+    // Filtrar objetos con 'AVG_SALES' <= 1
+    function filterAvgSales_LessThanEqualOne () {
+        return content.filter( row => { return row.avgSales <= 1 });
     }
 
     // *********************************************************
@@ -221,11 +253,22 @@
     }
     
     // *********************************************************
-    // Remover objetos con FHB == 07
-    function removeHFB_Kitchens() {
-        return content.filter( row => {return row.hfb != 7 } );
+    // Eliminar objetos con 'AVAILABLE_STOCK' !== 1
+    function filterAvailableStock_OnlyEqualOne() {
+        return content.filter( row => { return row.availableStock === 1 });
     }
 
+    // *********************************************************
+    // Remover objetos con FHB == 07
+    function removeHFB_Kitchens() {
+        return content.filter( row => {return row.hfb !== 7 } );
+    }
+
+    // *********************************************************
+    // Remueve TODOS los objetos MENOS los de 'HFB' == 07
+    function selectOnlyHFB_Kitchens() {
+        return content.filter( row => { return row.hfb === 7 });
+    }
     // *********************************************************
     // Calcula el valor de dividir 'AVAILABLE_STOCK' / 'AVG_SALES'
     function divideAvailableStockByAvgSales() {
@@ -240,20 +283,36 @@
         return content.filter( row => { return row.rotationRatio <= 1 })
     }
 
-
+    // *********************************************************
+    // Ordenar el array de obj x el lugar de venta
+    function orderBySalesLocationLV() {
+        content.sort((x, y) => x.salesLocationLV.localeCompare(y.salesLocationLV));
+    }
 
     // *********************************************************
     function showContent() {
         // (hfb, articleNumber, articleName, salesMethod, avgSales, availableStock, salesLocationLV) rotationRatio
-        let headers = ["HFB", "Descripción", "Art No.", "Lugar Venta"];
-        let dataTable = "";
+        // let headers = ["HFB", "Descripción", "Art No.", "Lugar Venta"];
+        let dataTableBody = "";
         
+        content.forEach(row => {
+            dataTableBody += "<tr>";
+            dataTableBody += "<td>";
+            dataTableBody += row.hfb;
+            dataTableBody += "</td>";
+            dataTableBody += "<td>";
+            dataTableBody += row.articleName;
+            dataTableBody += "</td>"; 
+            dataTableBody += "<td>";
+            dataTableBody += row.articleNumber;
+            dataTableBody += "</td>";
+            dataTableBody += "<td>";
+            dataTableBody += row.salesLocationLV;
+            dataTableBody += "</td>";
+            dataTableBody += "</tr>";
+        });
         
-
-
-
-        console.log("Show content:");   
-        console.log(content);
+        tableBody.innerHTML += dataTableBody;
     }
 
     // *********************************************************
