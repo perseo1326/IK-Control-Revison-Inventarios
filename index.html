@@ -4,36 +4,71 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <title>Carga y lectura archivo de texto en Javascript</title>
 </head>
 <body>
-    <div>
-        <h1>Carga y lectura de archivo</h1>
-        <h3>Objetivo:</h3>
-        <p>Carga y lectura de archivo de texto para analisis de datos planos.</p>
+    <div class="container">
+        <h1 class="margen-bajo">Revisión de Inventario</h1>
+        <p class=""><strong>Objetivo: </strong>Verificación de stock de referencias especificas.</p>
     </div>
 
-    <div id="">
-        <!-- The `multiple` attribute lets users select multiple files. -->
-        <!-- The attribute 'accept' allow to filter the files by their type -->
-        <input type="file" id="file-input" />
-        <h3>Contenido del archivo:</h3>
-        <pre id="contenido-archivo"></pre>
-    </div>
+    <div id="container">
+        <ol>
+            <li>
+                <label class="" for="">Seleccionar archivo de datos:</label>
+                <div class="ancho-100">
+                    <label class="custom-button" for="file-input">Subir archivo...</label>
+                    <!-- The `multiple` attribute lets users select multiple files. -->
+                    <!-- The attribute 'accept' allow to filter the files by their type -->
+                    <input type="file" class="" id="file-input" value="" />
+                </div>
+            </li>
+            <li>
+                <label class="margen-bajo" for="">Seleccione el dia de la semana:</label>
+                <div class="">
+                    <ul>
+                        <li>
+                            <label for="estateOne" class="custom-radio">
+                                <input type="radio" name="estate" id="estateOne" value="estateOne" checked>
+                                <span class="custom-radio custom-radio-show"></span>
+                                <span class="custom-radio custom-radio-text">Lunes / Jueves</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label for="estateTwo" class="custom-radio">
+                                <input type="radio" name="estate" id="estateTwo" value="estateTwo">
+                                <span class="custom-radio custom-radio-show" ></span>
+                                <span class="custom-radio custom-radio-text">Martes / Viernes</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label for="estateThree" class="custom-radio">
+                                <input type="radio" name="estate" id="estateThree" value="estateThree">
+                                <span class="custom-radio custom-radio-show " ></span>
+                                <span class="custom-radio custom-radio-text">Miercóles / Sábado</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </li>
 
-    <div class="marco">
-        <h4>Seleccione el dia de la semana:</h4>
-        <ul>
-            <li><input type="radio" name="estate" id="estateOne" value="estateOne" checked>Lunes / Jueves</li>
-            <li><input type="radio" name="estate" id="estateTwo" value="estateTwo">Martes / Viernes</li>
-            <li><input type="radio" name="estate" id="estateThree" value="estateThree">Miercóles / Sábado</li>
-        </ul>
-    </div>
+            <li>
+                <label class="" for="">Analizar el archivo seleccionado:</label>
+                <div>
+                    <label class="custom-button" for="process-file">Procesar archivo</label>
+                    <input id="process-file" type="button" value="Procesar Archivo" >
+                </div>
 
-    <div>
-        <input type="button" value="Procesar Archivo" id="process-file">
+            </li>
+        </ol>
     </div>
+        
+
+
 
     <div class="no-visible" id="loading">
         <p>Cargando...</p>
@@ -53,6 +88,10 @@
 
         </tbody>
     </table>
+
+    <div>
+        <h4>Final de la Tabla</h4>
+    </div>
 
     <script>
 

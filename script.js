@@ -15,6 +15,7 @@
     // *********************************************************
     const loading = document.getElementById("loading");
     const fileSelector = document.getElementById('file-input');
+    const customInputFile = document.getElementById("custom-input-file");
     const radioButtons = document.getElementsByName("estate");
     const contenido = document.getElementById("contenido-archivo");
     const tableBody = document.getElementById("data-body");
@@ -32,7 +33,6 @@
     let content = [];
     let weekDay = new Date("2023-01-16");
 
-    
     // *********************************************************
     // Auto seleccionar el dia de la semana correspondiente para el 'estado'
     switch (weekDay.getDay()) {
@@ -76,7 +76,6 @@
 
     // *********************************************************
     function loadFile() {
-        debugger;
         if (contentOriginal.length <= 0) {
             if(!readDataFromFile()) { 
                 return;
