@@ -28,7 +28,8 @@
     processFile.addEventListener('click', loadFile);
 
     const fileReader = new FileReader();
-    let content = new Array();
+    let contentOriginal = [];
+    let content = [];
     let weekDay = new Date("2023-01-16");
 
     
@@ -75,26 +76,18 @@
 
     // *********************************************************
     function loadFile() {
-        let rows = fileReader.result.split('\n');
-        let columns = [];
-        content = [];
-        rows.forEach(row => {
-            columns = row.split('\t');
-            content.push(columns);
-        });
-
-        if(!validateContent(content[0])) {
-            console.log("El contenido del archivo NO tiene formato válido.");
-            alert("El contenido del archivo NO tiene formato válido.");
-            return;
+        debugger;
+        if (contentOriginal.length <= 0) {
+            if(!readDataFromFile()) { 
+                return;
+            }
+            filterColumns();
+            // console.log("filtrar columnas", content.length);
+            contentOriginal = verifySalesMethodTwo();
+            // console.log("verificado metodo de ventas 2: ", contentOriginal.length);
         }
 
-        console.log("***********************************");
-        console.log("Total filas iniciales: " + content.length);
-        deleteEmptyFinalLines(content[0].length);
-        // Eliminar los encabezados
-        content.shift();
-        console.log("eliminando los encabezados: " + content.length);
+        content = contentOriginal;
 
         let estate = estateSelected();
         if(!estate) {
@@ -102,14 +95,40 @@
             return;
         }
 
-        filterColumns();
-        console.log("filtrar columnas", content.length);
-        content = verifySalesMethodTwo();
-        console.log("verificando metodo de ventas 2: ", content.length);
         processContent(estate);
-
         showContent();
-        
+    }
+
+    // *********************************************************
+    // Carga la info del archivo en memoria
+    function readDataFromFile () {
+        if (!fileReader.result) {
+            console.log("Primero debe seleccionar un archivo.");
+            alert("Primero debe seleccionar un archivo.");
+            return false;
+        }
+
+        let rows = fileReader.result.split('\n');
+        let columns = [];
+        contentOriginal = [];
+        rows.forEach(row => {
+            columns = row.split('\t');
+            contentOriginal.push(columns);
+        });
+
+        if(!validateContent(contentOriginal[0])) {
+            console.log("El contenido del archivo NO tiene formato válido.");
+            alert("El contenido del archivo NO tiene formato válido.");
+            return false;
+        }
+
+        console.log("***********************************");
+        console.log("Total filas iniciales: " + contentOriginal.length);
+        deleteEmptyFinalLines(contentOriginal[0].length);
+        // Eliminar los encabezados
+        contentOriginal.shift();
+        console.log("eliminando los encabezados: " + contentOriginal.length);
+        return true;
     }
 
     // *********************************************************
@@ -149,33 +168,33 @@
     // Elimina todas las lineas no validas del final de archivo.
     function deleteEmptyFinalLines(totalColumns) {
         // console.log("deleteEmptyFinalLines");
-        if (content[content.length - 1].length < totalColumns) {
-            content.pop();
+        if (contentOriginal[contentOriginal.length - 1].length < totalColumns) {
+            contentOriginal.pop();
             deleteEmptyFinalLines(totalColumns);
         }
     }
 
     // *********************************************************
     function filterColumns() {
-        let stockControlData = new Array();
-        for (let row = 0; row < content.length; row++) {
+        let stockControlData = [];
+        for (let row = 0; row < contentOriginal.length; row++) {
         // (hfb, articleNumber, articleName, salesMethod, avgSales, availableStock, salesLocationLV) rotationRatio
-            const stock = new StockControl(content[row][0].trim(), 
-                                            content[row][2].trim(),
-                                            content[row][3].trim(),
-                                            content[row][6].trim(),
-                                            content[row][5].trim(),
-                                            content[row][10].trim(),
-                                            content[row][18].trim() ); 
+            const stock = new StockControl(contentOriginal[row][0].trim(), 
+                                            contentOriginal[row][2].trim(),
+                                            contentOriginal[row][3].trim(),
+                                            contentOriginal[row][6].trim(),
+                                            contentOriginal[row][5].trim(),
+                                            contentOriginal[row][10].trim(),
+                                            contentOriginal[row][18].trim() ); 
             stockControlData.push(stock);
         }
-        content = stockControlData;
+        contentOriginal = stockControlData;
     }
     
     // *********************************************************
     // Verificar y eliminar cualquier objeto con metodo de venta diferente de '2'
     function verifySalesMethodTwo() {
-        return content.filter( (row) => {return row.salesMethod == 2 } );
+        return contentOriginal.filter( (row) => {return row.salesMethod == 2 } );
     }
 
     // *********************************************************
@@ -293,10 +312,17 @@
     function showContent() {
         // (hfb, articleNumber, articleName, salesMethod, avgSales, availableStock, salesLocationLV) rotationRatio
         // let headers = ["HFB", "Descripción", "Art No.", "Lugar Venta"];
-        let dataTableBody = "";
         
+        // Limpiar o inicializar valores para la tabla, en los datos y en la vista
+        tableBody.innerHTML = "";
+        let dataTableBody = "";
+        let count = 1;
+
         content.forEach(row => {
             dataTableBody += "<tr>";
+            dataTableBody += "<td>";
+            dataTableBody += count++;
+            dataTableBody += "</td>";
             dataTableBody += "<td>";
             dataTableBody += row.hfb;
             dataTableBody += "</td>";
