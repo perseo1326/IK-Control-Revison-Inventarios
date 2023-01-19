@@ -8,16 +8,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" media="print" href="printStyles.css">
     <title>Carga y lectura archivo de texto en Javascript</title>
 </head>
 <body>
     <div class="container">
         <h1 class="margen-bajo">Revisión de Inventario</h1>
-        <p class=""><strong>Objetivo: </strong>Verificación de stock de referencias especificas.</p>
+        <p class="hide-print"><strong>Objetivo: </strong>Verificación de stock de referencias especificas.</p>
     </div>
 
-    <div id="container hide-print">
+    <div class="container hide-print">
         <ol>
             <li>
                 <label class="" for="">Seleccionar archivo de datos:</label>
@@ -63,14 +62,18 @@
                     <label class="custom-button" for="process-file">Procesar archivo</label>
                     <input id="process-file" type="button" value="Procesar Archivo" >
                 </div>
+            </li>
 
+            <li>
+                <label for="">Editar ubicaciones de venta e imprimir el documento:</label>
+                <div>
+                    <label for="" class="custom-button" id="print-button" onclick="javascript:window.print()">Imprimir resultados</label>
+                    <!-- <span class="print-button" id="print-button" onclick="javascript:window.print();">Imprimir</span> -->
+                </div>            
             </li>
         </ol>
     </div>
         
-    <div>
-        <span class="print-button" id="print-button" onclick="javascript:window.print();">Imprimir</span>
-    </div>
 
 
     <div class="no-visible" id="loading">

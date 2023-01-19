@@ -333,7 +333,7 @@
             dataTableBody += "<td>";
             dataTableBody += row.articleNumber;
             dataTableBody += "</td>";
-            dataTableBody += "<td class='centrar' contentEditable=false>";
+            dataTableBody += "<td class='centrar' contentEditable=true>";
             dataTableBody += row.salesLocationLV;
             dataTableBody += "</td>";
             dataTableBody += "</tr>";
