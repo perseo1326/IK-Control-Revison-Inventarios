@@ -1,0 +1,18 @@
+
+
+/* ***** PRINTABLE STYLES ***** */
+/* @media print { */
+    body, html {
+        height: 100%;
+        background-color: yellowgreen !important;
+        color: navy !important;
+    }
+
+    .hide-print {
+        display: none !important;
+    }
+
+
+/* } */
+
+/* ***** PRINTABLE STYLES ENDS ***** */

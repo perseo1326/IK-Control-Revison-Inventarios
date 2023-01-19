@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" media="print" href="printStyles.css">
     <title>Carga y lectura archivo de texto en Javascript</title>
 </head>
 <body>
@@ -16,12 +17,12 @@
         <p class=""><strong>Objetivo: </strong>Verificación de stock de referencias especificas.</p>
     </div>
 
-    <div id="container">
+    <div id="container hide-print">
         <ol>
             <li>
                 <label class="" for="">Seleccionar archivo de datos:</label>
                 <div class="ancho-100">
-                    <label class="custom-button" for="file-input">Subir archivo...</label>
+                    <label class="custom-button" id="upload-file-b" for="file-input">Subir archivo...</label>
                     <!-- The `multiple` attribute lets users select multiple files. -->
                     <!-- The attribute 'accept' allow to filter the files by their type -->
                     <input type="file" class="" id="file-input" value="" />
@@ -67,17 +68,21 @@
         </ol>
     </div>
         
-
+    <div>
+        <span class="print-button" id="print-button" onclick="javascript:window.print();">Imprimir</span>
+    </div>
 
 
     <div class="no-visible" id="loading">
         <p>Cargando...</p>
     </div>
 
-    <table id="data-table">
-        <thead>
-        <!-- let headers = ["HFB", "Descripción", "Art No.", "Lugar Venta"]; -->
-            <tr>
+<div class="container">
+    <table id="data-table" class="borde margen-bajo">
+        <thead >
+            <!-- let headers = ["HFB", "Descripción", "Art No.", "Lugar Venta"]; -->
+            <tr class="cabecera centrar">
+                <th class="">No.</th>
                 <th>HFB</th>
                 <th>Descripción</th>
                 <th>Art. No.</th>
@@ -85,13 +90,14 @@
             </tr>
         </thead>
         <tbody id="data-body">
-
+            
         </tbody>
     </table>
-
+    
     <div>
-        <h4>Final de la Tabla</h4>
+        <h4 class="margen-bajo centrar">Final de la Tabla</h4>
     </div>
+</div>
 
     <script>
 

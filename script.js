@@ -71,6 +71,7 @@
             return;
         }
         fileReader.readAsText(file);
+        document.getElementById("upload-file-b").innerText = file.name;
         // fileReader.onload = loadFile;
     }
 
@@ -317,12 +318,13 @@
         let dataTableBody = "";
         let count = 1;
 
+
         content.forEach(row => {
-            dataTableBody += "<tr>";
-            dataTableBody += "<td>";
+            dataTableBody += "<tr class=''>";
+            dataTableBody += "<td class='centrar'>";
             dataTableBody += count++;
             dataTableBody += "</td>";
-            dataTableBody += "<td>";
+            dataTableBody += "<td class='centrar'>";
             dataTableBody += row.hfb;
             dataTableBody += "</td>";
             dataTableBody += "<td>";
@@ -331,7 +333,7 @@
             dataTableBody += "<td>";
             dataTableBody += row.articleNumber;
             dataTableBody += "</td>";
-            dataTableBody += "<td>";
+            dataTableBody += "<td class='centrar' contentEditable=false>";
             dataTableBody += row.salesLocationLV;
             dataTableBody += "</td>";
             dataTableBody += "</tr>";

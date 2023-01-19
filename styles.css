@@ -31,7 +31,11 @@ div.container {
     margin-bottom: 0.5rem;
 }
 
-h1 {
+.centrar {
+    text-align: center;
+}
+
+h1, h4 {
     margin: auto;
     padding: auto;
 }
@@ -63,6 +67,20 @@ ul li {
 	list-style-type: none;
     margin-bottom: 0.3rem;
     padding-left: auto;
+}
+
+div span.print-button {
+    display: inline-block;
+    background-color: #0057a4;
+    color: #ffdb01;
+    border-radius: 2px;
+    margin: 0 2rem;
+    padding: 0.3rem;
+}
+
+div span.print-button:hover {
+    background-color: #ffdb01;
+    color: #0057a4;
 }
 
 /* ***** CUSTOM RADIO BUTTONS ***** */
@@ -126,3 +144,28 @@ div#loading {
 	top: 50%;
 	left: 50%;
 }
+
+
+/* ***** TABLE STYLES ***** */
+
+table {
+    border-collapse: collapse;
+    border: 2px solid gray;
+}
+
+th, td {
+    border-bottom: 1px solid gray;
+}
+
+.cabecera {
+    background-color: #0057a4;
+    color: #ffdb01;
+}
+
+.resaltar {
+    background-color: #ffdb01;
+}
+
+/* ***** TABLE STYLES ENDS ***** */
+
+
