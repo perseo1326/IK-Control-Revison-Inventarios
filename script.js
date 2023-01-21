@@ -13,11 +13,10 @@
     }
 
     // *********************************************************
+    const loadingFrame = document.getElementById("loading-frame");
     const loading = document.getElementById("loading");
     const fileSelector = document.getElementById('file-input');
-    const customInputFile = document.getElementById("custom-input-file");
     const radioButtons = document.getElementsByName("estate");
-    const contenido = document.getElementById("contenido-archivo");
     const tableBody = document.getElementById("data-body");
     const processFile = document.getElementById("process-file");
 
@@ -25,14 +24,20 @@
     const ESTATE_TWO = 'estateTwo';
     const ESTATE_THREE = 'estateThree';
 
-    fileSelector.addEventListener('change', openFile, false); 
-    processFile.addEventListener('click', loadFile);
-
     const fileReader = new FileReader();
     let contentOriginal = [];
     let content = [];
-    let weekDay = new Date("2023-01-16");
+    let weekDay = new Date();
 
+    fileSelector.addEventListener('change', openFile); 
+    // fileSelector.addEventListener('change', readInputFileAsync); 
+    fileReader.addEventListener('loadstart', loadStart);
+    fileReader.addEventListener('progress', loadingInfo);
+    fileReader.addEventListener('loadend', () => {
+        loadingFrame.classList.add("no-visible");
+    });
+    processFile.addEventListener('click', loadFile);
+    
     // *********************************************************
     // Auto seleccionar el dia de la semana correspondiente para el 'estado'
     switch (weekDay.getDay()) {
@@ -64,15 +69,56 @@
     }
 
     // *********************************************************
+    function openFileAsync(file) {
+
+        return new Promise( (resolve, reject) => {
+            let fReader = new FileReader();
+            fReader.onload = x => resolve(fReader.result);
+            fReader.readAsText(file);
+        });
+    }
+
+    // *********************************************************
+    async function readInputFileAsync(evento) {
+        console.log(evento);
+        let text = await openFileAsync(evento.target.files[0]);
+        console.log(text);
+    }
+
+    // *********************************************************
+    function loadStart(evento) {
+        console.log("LoadStart:", evento);
+        console.log("Carga total: ", evento.total);
+        loadingFrame.classList.remove("no-visible");
+        // loadingInfo(evento);
+    }
+    
+    // *********************************************************
     function openFile(evento) {
+        console.clear();
         let file = evento.target.files[0];
+        // console.log(file);
+
         file = verifyTextFile(file);
         if(!file) {            
             return;
         }
+
         fileReader.readAsText(file);
         document.getElementById("upload-file-b").innerText = file.name;
         // fileReader.onload = loadFile;
+    }
+
+    // *********************************************************
+    // Funcion para visualizar el estado de carga del archivo 
+    function loadingInfo(evento) {
+        console.log("LoadingInfo - PROGRESS");
+            if (evento.loaded && evento.total) {
+                const percent = (evento.loaded / evento.total) * 100;
+                const loaded = (`Cargando... ${Math.round(percent)}%`);
+                console.log(loaded);
+                loading.innerText = loaded;
+            }
     }
 
     // *********************************************************
@@ -102,6 +148,7 @@
     // *********************************************************
     // Carga la info del archivo en memoria
     function readDataFromFile () {
+        console.log("fileReader contenido:", fileReader);
         if (!fileReader.result) {
             console.log("Primero debe seleccionar un archivo.");
             alert("Primero debe seleccionar un archivo.");
@@ -344,3 +391,4 @@
 
     // *********************************************************
 
+    // D:\compartida\HTML\Cursos\Carga-Lectura-Procesado-TXT\Carga-y-lectura-de-archivo-Javascript\Resources_Inventarios

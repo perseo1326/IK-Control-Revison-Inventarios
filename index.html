@@ -68,23 +68,22 @@
                 <label for="">Editar ubicaciones de venta e imprimir el documento:</label>
                 <div>
                     <label for="" class="custom-button" id="print-button" onclick="javascript:window.print()">Imprimir resultados</label>
-                    <!-- <span class="print-button" id="print-button" onclick="javascript:window.print();">Imprimir</span> -->
                 </div>            
             </li>
         </ol>
     </div>
         
-
-
-    <div class="no-visible" id="loading">
-        <p>Cargando...</p>
+    <div class="container_ loading-frame no-visible" id="loading-frame">
+        <div class="loading" >
+            <p id="loading">Cargando...</p>
+        </div>
     </div>
 
 <div class="container">
     <table id="data-table" class="borde margen-bajo">
         <thead >
             <!-- let headers = ["HFB", "Descripción", "Art No.", "Lugar Venta"]; -->
-            <tr class="cabecera centrar">
+            <tr class="cabecera centrar borde">
                 <th class="">No.</th>
                 <th>HFB</th>
                 <th>Descripción</th>
