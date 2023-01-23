@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <title>Carga y lectura archivo de texto en Javascript</title>
+</head>
+<body>
+    <div class="container margen-alta-05">
+        <h1 class="margen-bajo">Revisión de Inventario</h1>
+        <p class="hide-print"><strong>Objetivo: </strong>Verificación de stock de referencias especificas.</p>
+    </div>
+
+    <div class="container hide-print">
+        <ol>
+            <li>
+                <label class="" for="">Seleccionar archivo de datos:</label>
+                <div class="ancho-100">
+                    <label class="custom-button" id="upload-file-b" for="file-input">Subir archivo...</label>
+                    <!-- The `multiple` attribute lets users select multiple files. -->
+                    <!-- The attribute 'accept' allow to filter the files by their type -->
+                    <input type="file" class="" id="file-input" value="" />
+                </div>
+            </li>
+            <li>
+                <label class="margen-bajo" for="">Seleccione el dia de la semana:</label>
+                <div class="">
+                    <ul>
+                        <li>
+                            <label for="estateOne" class="custom-radio">
+                                <input type="radio" name="estate" id="estateOne" value="estateOne" checked>
+                                <span class="custom-radio custom-radio-show"></span>
+                                <span class="custom-radio custom-radio-text">Lunes / Jueves</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label for="estateTwo" class="custom-radio">
+                                <input type="radio" name="estate" id="estateTwo" value="estateTwo">
+                                <span class="custom-radio custom-radio-show" ></span>
+                                <span class="custom-radio custom-radio-text">Martes / Viernes</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label for="estateThree" class="custom-radio">
+                                <input type="radio" name="estate" id="estateThree" value="estateThree">
+                                <span class="custom-radio custom-radio-show " ></span>
+                                <span class="custom-radio custom-radio-text">Miercóles / Sábado</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li>
+                <label class="" for="">Analizar el archivo seleccionado:</label>
+                <div>
+                    <label class="custom-button" for="process-file">Procesar archivo</label>
+                    <input id="process-file" type="button" value="Procesar Archivo" >
+                </div>
+            </li>
+
+            <li>
+                <label for="">Editar ubicaciones de venta e imprimir el documento:</label>
+                <div>
+                    <label for="" class="custom-button" id="print-button">Imprimir resultados</label>
+                </div>            
+            </li>
+        </ol>
+    </div>
+        
+    <div class="container_ loading-frame no-visible" id="loading-frame">
+        <div class="loading" >
+            <p id="loading">Cargando...</p>
+        </div>
+    </div>
+
+<div class="container">
+    <table id="data-table" class="borde margen-bajo">
+        <thead >
+            <!-- let headers = ["HFB", "Descripción", "Art No.", "Lugar Venta"]; -->
+            <tr class="cabecera centrar borde">
+                <th class="">No.</th>
+                <th>HFB</th>
+                <th>Descripción</th>
+                <th>Stock</th>
+                <th>Art. No.</th>
+                <th>Lugar de Venta</th>
+            </tr>
+        </thead>
+        <tbody id="data-body">
+            
+        </tbody>
+    </table>
+    
+    <div>
+        <h4 class="margen-bajo centrar">Final de la Tabla</h4>
+    </div>
+</div>
+
+    <script>
+
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
