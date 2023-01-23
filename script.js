@@ -19,6 +19,7 @@
     const radioButtons = document.getElementsByName("estate");
     const tableBody = document.getElementById("data-body");
     const processFile = document.getElementById("process-file");
+    const printButton = document.getElementById("print-button");
 
     const ESTATE_ONE = 'estateOne';
     const ESTATE_TWO = 'estateTwo';
@@ -30,13 +31,16 @@
     let weekDay = new Date();
 
     fileSelector.addEventListener('change', openFile); 
-    // fileSelector.addEventListener('change', readInputFileAsync); 
-    fileReader.addEventListener('loadstart', loadStart);
+    fileReader.addEventListener('loadstart', () => {
+        loadingFrame.classList.remove("no-visible");
+    });
     fileReader.addEventListener('progress', loadingInfo);
     fileReader.addEventListener('loadend', () => {
         loadingFrame.classList.add("no-visible");
     });
+    printButton.addEventListener('click', printDocument);
     processFile.addEventListener('click', loadFile);
+    tableBody.addEventListener('click', dataClick);
     
     // *********************************************************
     // Auto seleccionar el dia de la semana correspondiente para el 'estado'
@@ -67,37 +71,11 @@
         }
         return null;
     }
-
-    // *********************************************************
-    function openFileAsync(file) {
-
-        return new Promise( (resolve, reject) => {
-            let fReader = new FileReader();
-            fReader.onload = x => resolve(fReader.result);
-            fReader.readAsText(file);
-        });
-    }
-
-    // *********************************************************
-    async function readInputFileAsync(evento) {
-        console.log(evento);
-        let text = await openFileAsync(evento.target.files[0]);
-        console.log(text);
-    }
-
-    // *********************************************************
-    function loadStart(evento) {
-        console.log("LoadStart:", evento);
-        console.log("Carga total: ", evento.total);
-        loadingFrame.classList.remove("no-visible");
-        // loadingInfo(evento);
-    }
     
     // *********************************************************
     function openFile(evento) {
         console.clear();
         let file = evento.target.files[0];
-        // console.log(file);
 
         file = verifyTextFile(file);
         if(!file) {            
@@ -112,11 +90,9 @@
     // *********************************************************
     // Funcion para visualizar el estado de carga del archivo 
     function loadingInfo(evento) {
-        console.log("LoadingInfo - PROGRESS");
             if (evento.loaded && evento.total) {
                 const percent = (evento.loaded / evento.total) * 100;
                 const loaded = (`Cargando... ${Math.round(percent)}%`);
-                console.log(loaded);
                 loading.innerText = loaded;
             }
     }
@@ -148,7 +124,6 @@
     // *********************************************************
     // Carga la info del archivo en memoria
     function readDataFromFile () {
-        console.log("fileReader contenido:", fileReader);
         if (!fileReader.result) {
             console.log("Primero debe seleccionar un archivo.");
             alert("Primero debe seleccionar un archivo.");
@@ -174,7 +149,7 @@
         deleteEmptyFinalLines(contentOriginal[0].length);
         // Eliminar los encabezados
         contentOriginal.shift();
-        console.log("eliminando los encabezados: " + contentOriginal.length);
+        console.log("Encabezados eliminados: " + contentOriginal.length);
         return true;
     }
 
@@ -335,6 +310,7 @@
     function selectOnlyHFB_Kitchens() {
         return content.filter( row => { return row.hfb === 7 });
     }
+
     // *********************************************************
     // Calcula el valor de dividir 'AVAILABLE_STOCK' / 'AVG_SALES'
     function divideAvailableStockByAvgSales() {
@@ -347,6 +323,12 @@
     // Eliminar todos los obj con 'rotationRatio' > 1
     function filterRotationRatio_MoreThanOne() {
         return content.filter( row => { return row.rotationRatio <= 1 })
+    }
+
+    // *********************************************************
+    // Funcion para encontrar un elemento segun su 'Art Number'
+    function findArticleNumber() {
+        return this.articleNumber === BUSQUEDA;
     }
 
     // *********************************************************
@@ -369,7 +351,7 @@
         content.forEach(row => {
             dataTableBody += "<tr class=''>";
             dataTableBody += "<td class='centrar'>";
-            dataTableBody += count++;
+            dataTableBody += count;
             dataTableBody += "</td>";
             dataTableBody += "<td class='centrar'>";
             dataTableBody += row.hfb;
@@ -377,18 +359,53 @@
             dataTableBody += "<td>";
             dataTableBody += row.articleName;
             dataTableBody += "</td>"; 
+            dataTableBody += "<td class='centrar'>";
+            dataTableBody += row.availableStock;
+            dataTableBody += "</td>"; 
             dataTableBody += "<td>";
             dataTableBody += row.articleNumber;
             dataTableBody += "</td>";
-            dataTableBody += "<td class='centrar' contentEditable=true>";
+            dataTableBody += "<td data-index='" + (count -1) + "' data-article-number='" + row.articleNumber + "' data-sales-location='" + row.salesLocationLV + "' class='centrar' contentEditable=true onblur='javascript:removeRowSelection(this)' onchange='javascript:changeRowData(this)'>";
             dataTableBody += row.salesLocationLV;
             dataTableBody += "</td>";
             dataTableBody += "</tr>";
+            count++;
         });
         
         tableBody.innerHTML += dataTableBody;
     }
 
+    // *********************************************************
+    // Reordena el contenido por la columna 'Lugar de Venta' e imprime el documento
+    function printDocument() {
+        orderBySalesLocationLV();
+        showContent();
+        window.print();
+    }
+
+    // *********************************************************
+    function dataClick(evento) {
+        const element = evento.srcElement;
+        if(element.dataset.articleNumber) {
+            element.parentElement.classList.add("editable");
+        }
+    }
+
+    // *********************************************************
+    function removeRowSelection(element){
+        console.log("Evento blur");
+        if (element.textContent !== element.dataset.salesLocation) {
+            if(content[element.dataset.index].articleNumber !== element.dataset.articleNumber ) {
+                console.log("Ocurrió un error al actualizar la información");
+                alert("Ocurrió un error al actualizar la información");
+                return;
+            }
+            // console.log("Elemento: ", content[element.dataset.index]);
+            content[element.dataset.index].salesLocationLV = element.textContent;
+        }
+        element.parentElement.classList.remove("editable");
+    }
+    
     // *********************************************************
 
     // D:\compartida\HTML\Cursos\Carga-Lectura-Procesado-TXT\Carga-y-lectura-de-archivo-Javascript\Resources_Inventarios

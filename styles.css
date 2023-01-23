@@ -14,13 +14,17 @@ body {
 }
 
 div.container {
-    padding: 1rem ;
+    padding: 0.5rem 1rem;
     display: flex;
     flex-direction: column;
 }
 
 .no-visible {
     display: none;
+}
+
+.margen-alta-05 {
+    margin-top: 0.5rem;
 }
 
 .ancho-100 {
@@ -38,6 +42,10 @@ div.container {
 h1, h4 {
     margin: auto;
     padding: auto;
+}
+
+h1 {
+    font-weight: bolder;
 }
 
 ol {
@@ -172,6 +180,15 @@ th, td {
 
 tr:nth-last-of-type(2n+0) {
     background-color: lightgray;
+}
+
+tbody tr:hover, tbody tr.editable {
+    background-color: #ffdb01;
+}
+
+tbody tr:hover td[contentEditable] {
+    color: var(--second-color);
+    background-color: var(--first-color);
 }
 
 .cabecera {
