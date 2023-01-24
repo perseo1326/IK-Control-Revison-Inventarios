@@ -339,14 +339,10 @@
 
     // *********************************************************
     function showContent() {
-        // (hfb, articleNumber, articleName, salesMethod, avgSales, availableStock, salesLocationLV) rotationRatio
-        // let headers = ["HFB", "Descripción", "Art No.", "Lugar Venta"];
-        
         // Limpiar o inicializar valores para la tabla, en los datos y en la vista
         tableBody.innerHTML = "";
         let dataTableBody = "";
         let count = 1;
-
 
         content.forEach(row => {
             dataTableBody += "<tr class=''>";
@@ -407,5 +403,3 @@
     }
     
     // *********************************************************
-
-    // D:\compartida\HTML\Cursos\Carga-Lectura-Procesado-TXT\Carga-y-lectura-de-archivo-Javascript\Resources_Inventarios
