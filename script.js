@@ -162,7 +162,7 @@
             return null;
         }
         /*
-        if (aFile.type && !aFile.type.startsWith('text/')) {
+        if (file.type && !file.type.startsWith('text/')) {
             alert('El archivo seleccionado NO es válido.');
             console.log('El archivo seleccionado NO es válido.');
             return null;
