@@ -322,7 +322,7 @@
     // *********************************************************
     // Eliminar todos los obj con 'rotationRatio' > 1
     function filterRotationRatio_MoreThanOne() {
-        return content.filter( row => { return row.rotationRatio <= 1 })
+        return content.filter( row => { return row.rotationRatio < 1 })
     }
 
     // *********************************************************
