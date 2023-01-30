@@ -168,6 +168,7 @@
             return null;
         }
         */
+        tableBody.innerHTML = "";
         return file;
     }
 
