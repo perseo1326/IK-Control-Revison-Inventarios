@@ -24,6 +24,8 @@
     const ESTATE_ONE = 'estateOne';
     const ESTATE_TWO = 'estateTwo';
     const ESTATE_THREE = 'estateThree';
+    // constante NECESARIA si se Uglify el codigo
+    const ARTICLE_NUMBER = "articleNumber";
 
     const fileReader = new FileReader();
     let contentOriginal = [];
@@ -144,12 +146,12 @@
             return false;
         }
 
-        console.log("***********************************");
-        console.log("Total filas iniciales: " + contentOriginal.length);
+        // console.log("***********************************");
+        // console.log("Total filas iniciales: " + contentOriginal.length);
         deleteEmptyFinalLines(contentOriginal[0].length);
         // Eliminar los encabezados
         contentOriginal.shift();
-        console.log("Encabezados eliminados: " + contentOriginal.length);
+        // console.log("Encabezados eliminados: " + contentOriginal.length);
         return true;
     }
 
@@ -223,7 +225,7 @@
     // *********************************************************
     // Seleccionar la logica dependiendo del 'estado' seleccioando
     function processContent(estate) {
-        console.log("Estado seleccionado: " + estate);
+        // console.log("Estado seleccionado: " + estate);
         switch (estate) {
             case ESTATE_ONE:
                 content = removeHFB_Kitchens();
@@ -390,7 +392,7 @@
             pattern1.test(salesLocation) || 
             pattern2.test(salesLocation) || 
             pattern3.test(salesLocation)) {
-                console.log("encontrado texto en: " + salesLocation);
+                // console.log("encontrado texto en: " + salesLocation);
                 return true;
         }
         return false;
@@ -414,15 +416,15 @@
     }
 
     // *********************************************************
+    // function removeRowSelection(element){
     function removeRowSelection(element){
-        console.log("Evento blur, Fx:removeRowSelection: ", element);
+        console.log("Fx removeRowSelection ", element);
         if (element.value !== element.parentElement.dataset.salesLocation) {
-            if(content[element.parentElement.dataset.index].articleNumber !== element.parentElement.dataset.articleNumber ) {
+            if(content[element.parentElement.dataset.index].ARTICLE_NUMBER !== element.parentElement.dataset.articleNumber ) {
                 console.log("Ocurrió un error al actualizar la información");
                 alert("Ocurrió un error al actualizar la información");
                 return;
             }
-            // console.log("Elemento: ", content[element.parentElement.dataset.index]);
             content[element.parentElement.dataset.index].salesLocationLV = element.value;
             if (isFictitiousLocation(element.value)) {
                 element.parentElement.classList.add("is-fictitious-location");
@@ -434,7 +436,6 @@
 
     }
     
-    // *********************************************************
 
 
 
