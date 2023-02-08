@@ -5,6 +5,14 @@ Esta **"applicación"** permite al usuario seleccionar un archivo que se encuent
 
 ## **Actualizaciones y mejoras**
 
+### Versión 1.3:
+    * Modificación de la columna "Lugar de Venta" para evitar copiar formatos cuando se copia y pega desde hojas de cálculo.
+    * Correción de la visualización de estilos en la columna "Lugar de Venta".
+    * Resaltado automatico de los lugares de venta ficticios o que se encuentren vacios para facilitar su edición.
+    * Resaltado automatico en modo de impresión de los lugares de venta ficticios para facilitar su visualización.
+    * Corregido bug al cargar un archivo no válido e intentar procesarlo.
+    * Corregido problema al mostrar los carácteres especiales debido a la codificación del archivo de texto o CSV diferente de UTF-8.
+
 ### Versión 1.2:
     * Corrección de limite en los valores calculados en la función que calcula el "rotationRatio".
     * Corrección de parte visual limpiando el contenido visualizado al seleccionar un documento nuevo.

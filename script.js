@@ -82,7 +82,7 @@
             return;
         }
 
-        fileReader.readAsText(file);
+        fileReader.readAsText(file, "windows-1252");
         document.getElementById("upload-file-b").innerText = file.name;
         // fileReader.onload = loadFile;
     }
@@ -104,9 +104,7 @@
                 return;
             }
             filterColumns();
-            // console.log("filtrar columnas", content.length);
             contentOriginal = verifySalesMethodTwo();
-            // console.log("verificado metodo de ventas 2: ", contentOriginal.length);
         }
 
         content = contentOriginal;
@@ -139,6 +137,8 @@
         });
 
         if(!validateContent(contentOriginal[0])) {
+            // eliminar cualquier previa info para evitar errores.
+            content = contentOriginal = [];
             console.log("El contenido del archivo NO tiene formato válido.");
             alert("El contenido del archivo NO tiene formato válido.");
             return false;
@@ -344,8 +344,10 @@
         tableBody.innerHTML = "";
         let dataTableBody = "";
         let count = 1;
+        let classFictitiousLocation = "";
 
         content.forEach(row => {
+            classFictitiousLocation = "";
             dataTableBody += "<tr class=''>";
             dataTableBody += "<td class='centrar'>";
             dataTableBody += count;
@@ -353,23 +355,45 @@
             dataTableBody += "<td class='centrar'>";
             dataTableBody += row.hfb;
             dataTableBody += "</td>";
-            dataTableBody += "<td>";
+            dataTableBody += "<td><p class='text-print-overflow-hidden'>";
             dataTableBody += row.articleName;
-            dataTableBody += "</td>"; 
+            dataTableBody += "</p></td>"; 
             dataTableBody += "<td class='centrar'>";
             dataTableBody += row.availableStock;
             dataTableBody += "</td>"; 
             dataTableBody += "<td>";
             dataTableBody += row.articleNumber;
             dataTableBody += "</td>";
-            dataTableBody += "<td data-index='" + (count -1) + "' data-article-number='" + row.articleNumber + "' data-sales-location='" + row.salesLocationLV + "' class='centrar' contentEditable=true onblur='javascript:removeRowSelection(this)' onchange='javascript:changeRowData(this)'>";
+            if(isFictitiousLocation(row.salesLocationLV)) {
+                classFictitiousLocation = "is-fictitious-location";
+            } 
+            dataTableBody += "<td data-index='" + (count -1) + "' data-article-number='" + row.articleNumber + "' data-sales-location='" + row.salesLocationLV + "' class='centrar " + classFictitiousLocation + "' >";
+            dataTableBody += "<input type='text' name='' class='unstyle' id='" + row.articleNumber + "' value='";
             dataTableBody += row.salesLocationLV;
+            dataTableBody += "' onblur='javascript:removeRowSelection(this)'>";
             dataTableBody += "</td>";
             dataTableBody += "</tr>";
             count++;
         });
         
         tableBody.innerHTML += dataTableBody;
+    }
+
+    // *********************************************************
+    // funcion para "señalar" cuales ubicaciones ficticias deben ser actualizadas 
+    function isFictitiousLocation(salesLocation) {
+        const pattern1 = /950150/;
+        const pattern2 = /950250/;
+        const pattern3 = /[a-z]/i;
+
+        if(!salesLocation ||
+            pattern1.test(salesLocation) || 
+            pattern2.test(salesLocation) || 
+            pattern3.test(salesLocation)) {
+                console.log("encontrado texto en: " + salesLocation);
+                return true;
+        }
+        return false;
     }
 
     // *********************************************************
@@ -382,7 +406,8 @@
 
     // *********************************************************
     function dataClick(evento) {
-        const element = evento.srcElement;
+        const element = evento.srcElement.parentElement;
+        // console.log("dataClick: ", element);
         if(element.dataset.articleNumber) {
             element.parentElement.classList.add("editable");
         }
@@ -390,19 +415,28 @@
 
     // *********************************************************
     function removeRowSelection(element){
-        console.log("Evento blur");
-        if (element.textContent !== element.dataset.salesLocation) {
-            if(content[element.dataset.index].articleNumber !== element.dataset.articleNumber ) {
+        console.log("Evento blur, Fx:removeRowSelection: ", element);
+        if (element.value !== element.parentElement.dataset.salesLocation) {
+            if(content[element.parentElement.dataset.index].articleNumber !== element.parentElement.dataset.articleNumber ) {
                 console.log("Ocurrió un error al actualizar la información");
                 alert("Ocurrió un error al actualizar la información");
                 return;
             }
-            // console.log("Elemento: ", content[element.dataset.index]);
-            content[element.dataset.index].salesLocationLV = element.textContent;
+            // console.log("Elemento: ", content[element.parentElement.dataset.index]);
+            content[element.parentElement.dataset.index].salesLocationLV = element.value;
+            if (isFictitiousLocation(element.value)) {
+                element.parentElement.classList.add("is-fictitious-location");
+            } else {
+                element.parentElement.classList.remove("is-fictitious-location");
+            }
         }
-        element.parentElement.classList.remove("editable");
+        element.parentElement.parentElement.classList.remove("editable");
+
     }
     
     // *********************************************************
 
-    // https://products.aspose.app/html/es/minifier/html
+
+
+
+
