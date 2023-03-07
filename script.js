@@ -25,6 +25,7 @@
     const ESTATE_TWO = 'estateTwo';
     const ESTATE_THREE = 'estateThree';
     // constante NECESARIA si se Uglify el codigo
+    const SALES_LOCATION = "salesLocation";
     const ARTICLE_NUMBER = "articleNumber";
 
     const fileReader = new FileReader();
@@ -43,7 +44,9 @@
     printButton.addEventListener('click', printDocument);
     processFile.addEventListener('click', loadFile);
     tableBody.addEventListener('click', dataClick);
+    tableBody.addEventListener('focusout', removeRowSelection);
     
+
     // *********************************************************
     // Auto seleccionar el dia de la semana correspondiente para el 'estado'
     switch (weekDay.getDay()) {
@@ -330,9 +333,9 @@
 
     // *********************************************************
     // Funcion para encontrar un elemento segun su 'Art Number'
-    function findArticleNumber() {
-        return this.articleNumber === BUSQUEDA;
-    }
+    // function findArticleNumber() {
+    //     return this.articleNumber === BUSQUEDA;
+    // }
 
     // *********************************************************
     // Ordenar el array de obj x el lugar de venta
@@ -370,10 +373,10 @@
                 classFictitiousLocation = "is-fictitious-location";
             } 
             dataTableBody += "<td data-index='" + (count -1) + "' data-article-number='" + row.articleNumber + "' data-sales-location='" + row.salesLocationLV + "' class='centrar " + classFictitiousLocation + "' >";
-            dataTableBody += "<input type='text' name='' class='unstyle' id='" + row.articleNumber + "' value='";
-            dataTableBody += row.salesLocationLV;
-            // dataTableBody += " onclick('javascript:"
-            dataTableBody += "' onblur='javascript:removeRowSelection(this)'>";
+            dataTableBody += "<input type='text' name='' class='unstyle' id='" + row.articleNumber + "' ";
+            dataTableBody += "value='" + row.salesLocationLV + "' ";
+            // dataTableBody += "' onblur='javascript:removeRowSelection(this)'";
+            dataTableBody += " />";
             dataTableBody += "</td>";
             dataTableBody += "</tr>";
             count++;
@@ -409,32 +412,32 @@
 
     // *********************************************************
     function dataClick(evento) {
-        const element = evento.srcElement.parentElement;
-        // console.log("dataClick: ", element);
-        if(element.dataset.articleNumber) {
-            element.parentElement.classList.add("editable");
+        const element = evento.srcElement;
+        if(element.tagName === "INPUT" && element.className === "unstyle") {
+            element.parentElement.parentElement.classList.add("editable");
         }
     }
 
     // *********************************************************
-    // function removeRowSelection(element){
-    function removeRowSelection(element){
-        console.log("Fx removeRowSelection ", element);
-        if (element.value !== element.parentElement.dataset.salesLocation) {
-            if(content[element.parentElement.dataset.index].ARTICLE_NUMBER !== element.parentElement.dataset.articleNumber ) {
-                console.log("Ocurrió un error al actualizar la información");
-                alert("Ocurrió un error al actualizar la información");
-                return;
+    function removeRowSelection(evento){
+        const element = evento.srcElement;
+        if(element.tagName === "INPUT" && element.className === "unstyle") {
+            if (element.value !== element.parentElement.dataset[SALES_LOCATION]) {
+                if(content[element.parentElement.dataset.index].articleNumber !== element.parentElement.dataset[ARTICLE_NUMBER] ) {
+                    console.log("Ocurrió un error al actualizar la información");
+                    alert("Ocurrió un error al actualizar la información");
+                    element.value = element.parentElement.dataset[SALES_LOCATION];
+                } else {
+                    content[element.parentElement.dataset.index].salesLocationLV = element.value;
+                    if (isFictitiousLocation(element.value)) {
+                        element.parentElement.classList.add("is-fictitious-location");
+                    } else {
+                        element.parentElement.classList.remove("is-fictitious-location");
+                    }
+                }
             }
-            content[element.parentElement.dataset.index].salesLocationLV = element.value;
-            if (isFictitiousLocation(element.value)) {
-                element.parentElement.classList.add("is-fictitious-location");
-            } else {
-                element.parentElement.classList.remove("is-fictitious-location");
-            }
+            element.parentElement.parentElement.classList.remove("editable");
         }
-        element.parentElement.parentElement.classList.remove("editable");
-
     }
     
 
