@@ -79,7 +79,7 @@
         console.clear();
         let file = evento.target.files[0];
 
-        file = verifyTextFile(file);
+        file = verifyFileExist(file);
         if(!file) {            
             return;
         }
@@ -157,7 +157,7 @@
 
     // *********************************************************
     // Verifica el archivo seleccionado        
-    function verifyTextFile(file) {
+    function verifyFileExist(file) {
         if (!file) {
             alert("No se ha seleccionado ningun archivo.");
             console.log("No se ha seleccionado ningun archivo.");
@@ -372,6 +372,7 @@
             dataTableBody += "<td data-index='" + (count -1) + "' data-article-number='" + row.articleNumber + "' data-sales-location='" + row.salesLocationLV + "' class='centrar " + classFictitiousLocation + "' >";
             dataTableBody += "<input type='text' name='' class='unstyle' id='" + row.articleNumber + "' value='";
             dataTableBody += row.salesLocationLV;
+            // dataTableBody += " onclick('javascript:"
             dataTableBody += "' onblur='javascript:removeRowSelection(this)'>";
             dataTableBody += "</td>";
             dataTableBody += "</tr>";

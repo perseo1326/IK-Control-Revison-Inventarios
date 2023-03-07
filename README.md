@@ -5,6 +5,11 @@ Esta **"applicación"** permite al usuario seleccionar un archivo que se encuent
 
 ## **Actualizaciones y mejoras**
 
+### Versión 1.4:
+    * Modificacion del titulo de la página.
+    * Mejora en la visualización de la fila cuando entra en modo edición para la columna "Lugar de venta".
+    * Modificación visual en la tabla cambiando el tipo de cursor entre la columna "Lugar de venta" (editable) y las demás columnas NO editables.
+
 ### Versión 1.3:
     * Modificación de la columna "Lugar de Venta" para evitar copiar formatos cuando se copia y pega desde hojas de cálculo.
     * Correción de la visualización de estilos en la columna "Lugar de Venta".
