@@ -16,9 +16,16 @@
     <title>Previsión Excesos de Inventario en el Full</title>
 </head>
 <body>
+
+    <div class="loading-frame no-visible" id="loading-frame">
+        <div class="loading" >
+            <p id="loading">Cargando...</p>
+        </div>
+    </div>
+
     <div class="container margen-alta-05 margen-bajo">
-        <h1 class="margen-bajo">Previsión Excesos de Inventario en el Full</h1>
-        <p class="hide-print"><strong>Objetivo: </strong>Verificación de stock para la prevención de excesos en el fulfillment.</p>
+        <h1 class="margen-bajo">Previsión Excesos de Inventario en el Full <span class="version-titulo" id="version-titulo"></span></h1>
+            <p class="hide-print"><strong>Objetivo: </strong>Verificación de stock para la prevención de excesos en el fulfillment.</p>
     </div>
 
     <div class="container hide-print margen-bajo">
@@ -64,24 +71,17 @@
             <li>
                 <label class="" for="">Analizar el archivo seleccionado:</label>
                 <div>
-                    <label class="custom-button" for="process-file">Procesar archivo</label>
-                    <input id="process-file" type="button" value="Procesar Archivo" >
+                    <input id="process-file" class="custom-button disable" type="button" value="Procesar Archivo" disabled />
                 </div>
             </li>
 
             <li>
                 <label for="">Editar ubicaciones de venta e imprimir el documento:</label>
                 <div>
-                    <label for="" class="custom-button" id="print-button">Imprimir resultados</label>
+                    <input class="custom-button disable" id="print-button" type="button" value="Imprimir resultados" disabled>
                 </div>            
             </li>
         </ol>
-    </div>
-        
-    <div class="loading-frame no-visible" id="loading-frame">
-        <div class="loading" >
-            <p id="loading">Cargando...</p>
-        </div>
     </div>
 
 <div class="container">
@@ -106,12 +106,17 @@
         <h4 class="margen-bajo centrar">Final de la Tabla</h4>
     </div>
 </div>
-<div title="https://github.com/perseo1326">
-    <p class="version">Versión 1.4</p>
+
+<!-- Version de la aplicacion -->
+<div class="margen-bajo-05">
+    <p id="version-footer" class="version ancho-50"></p>
 </div>
+
     <script>
 
     </script>
+    <script src="./xlsx.full.min.js"></script>
+    <script src="./excelReportsFunctions.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

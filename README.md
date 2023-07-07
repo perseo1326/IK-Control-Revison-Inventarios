@@ -5,6 +5,9 @@ Esta **"applicación"** permite al usuario seleccionar un archivo que se encuent
 
 ## **Actualizaciones y mejoras**
 
+### Versión 2.0:
+    * Cambio de fuente de datos, pasando de archivo de texto CSV a un informe en Excel.
+    
 ### Versión 1.4:
     * Modificacion del titulo de la página.
     * Mejora en la visualización de la fila cuando entra en modo edición para la columna "Lugar de venta".
