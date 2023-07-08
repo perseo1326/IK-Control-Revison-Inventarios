@@ -229,13 +229,17 @@ tbody tr:hover td input[type='text']
     cursor: text;
 }
 
-tbody tr td.is-fictitious-location {
+tbody tr td input[type='text'].is-fictitious-location {
     background-color: var(--warning-color);
 }
 
 .cabecera {
     background-color: var(--first-color);
     color: var(--second-color);
+}
+
+.padding-small {
+    padding: 0 0.2em;
 }
 
 /* ***** TABLE STYLES ENDS ***** */
@@ -267,10 +271,11 @@ tbody tr td.is-fictitious-location {
         display: block;
     }
 
-    tbody tr td.is-fictitious-location {
-        background-color: rgb(201, 201, 201);
+    tbody tr td input[type='text'].is-fictitious-location {
         print-color-adjust: exact;
         -webkit-print-color-adjust:exact;
+        background-color: rgb(143, 143, 143);
+        color: white;
     }
 
     p.version {

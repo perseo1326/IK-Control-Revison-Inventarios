@@ -7,6 +7,8 @@ Esta **"applicación"** permite al usuario seleccionar un archivo que se encuent
 
 ### Versión 2.0:
     * Cambio de fuente de datos, pasando de archivo de texto CSV a un informe en Excel.
+    * Mejora en la edición de la columna lugar de venta.
+    * Mejora visual al momento de imprimir el documento, identificando las ubicaciones ficticias.
     
 ### Versión 1.4:
     * Modificacion del titulo de la página.
