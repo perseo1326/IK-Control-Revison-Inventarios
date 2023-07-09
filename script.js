@@ -130,13 +130,16 @@ class StockControl {
     function loadReportsExcel (excelFile){
 
         let fileReader = new FileReader();
+        const utils = "utils";
+        const sheet_to_row_object_array = "sheet_to_row_object_array";
+        const Sheets = "Sheets";
 
         fileReader.readAsArrayBuffer(excelFile.file);
         fileReader.onload =  function(){
             try {
                 let buffer = this.result;
-                let workbook =  XLSX.read(buffer);
-                let contentFile =  XLSX.utils.sheet_to_row_object_array(workbook.Sheets[WORKING_SHEET]);
+                let workbook =  XLSX["read"](buffer);
+                let contentFile =  XLSX[utils][sheet_to_row_object_array](workbook[Sheets][WORKING_SHEET]);
 
                 // process and clean info from the file
                 let arrayExcel = readReportsExcel(excelFile.file, contentFile);

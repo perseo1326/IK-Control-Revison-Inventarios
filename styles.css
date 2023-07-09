@@ -62,8 +62,7 @@ ol {
 }
 
 input[type="file"]
-/* input[type='button'] */
- {
+{
     display: none;
 }
 

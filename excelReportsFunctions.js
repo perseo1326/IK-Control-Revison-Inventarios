@@ -61,9 +61,6 @@ class ExcelFileOpen {
             console.log("ERROR:readReportsExcel: Contenido del archivo NO válido.");
             throw new Error("Contenido del archivo NO válido.");
         }
-        
-        // excelDataArray = filterOrderTypeOnlyPUP(excelDataArray);
-
         return excelDataArray;
     }
 
